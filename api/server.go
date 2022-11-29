@@ -23,7 +23,10 @@ func Run() {
 		fmt.Println("We are getting the env values")
 	}
 
-	server.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
+	// LIVE
+	// server.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
+	// DEV
+	server.Initialize(os.Getenv("TestDbDriver"), os.Getenv("TestDbUser"), os.Getenv("TestDbPassword"), os.Getenv("TestDbPort"), os.Getenv("TestDbHost"), os.Getenv("TestDbName"))
 
 	seed.Load(server.DB)
 

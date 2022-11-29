@@ -10,7 +10,7 @@ package controllers
 import (
 	"net/http"
 
-	"go-morclinic/responses"
+	"go-morclinic/api/responses"
 )
 
 func (server *Server) Home(w http.ResponseWriter, r *http.Request) {
