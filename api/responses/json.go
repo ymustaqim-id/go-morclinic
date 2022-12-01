@@ -22,13 +22,18 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 }
 
 func ERROR(w http.ResponseWriter, statusCode int, err error) {
+	fmt.Println("data", err)
 	if err != nil {
 		JSON(w, statusCode, struct {
-			Error string `json:"error"`
+			Status  string `json:"status"`
+			Message string `json:"message"`
+			Data    string `json:"data"`
 		}{
-			Error: err.Error(),
+			Status:  "false",
+			Message: err.Error(),
+			Data:    "",
 		})
 		return
 	}
-	JSON(w, http.StatusBadRequest, nil)
+	JSON(w, http.StatusBadRequest, "kosong")
 }

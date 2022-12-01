@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"go-morclinic/api/controllers"
-	"go-morclinic/api/seed"
 
 	"github.com/joho/godotenv"
 )
@@ -28,7 +27,8 @@ func Run() {
 	// DEV
 	server.Initialize(os.Getenv("TestDbDriver"), os.Getenv("TestDbUser"), os.Getenv("TestDbPassword"), os.Getenv("TestDbPort"), os.Getenv("TestDbHost"), os.Getenv("TestDbName"))
 
-	seed.Load(server.DB)
+	// load seeder here
+	// seed.Load(server.DB)
 
 	server.Run(":8080")
 
