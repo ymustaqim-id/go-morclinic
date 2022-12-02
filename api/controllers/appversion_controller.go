@@ -8,7 +8,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"go-morclinic/api/models"
@@ -19,12 +18,11 @@ func (server *Server) GetAppversion(w http.ResponseWriter, r *http.Request) {
 
 	appversion := models.App_version{}
 	apps, err := appversion.FindAllVersion(server.DB)
-	fmt.Println("data err", err)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	fmt.Println("data apps", apps)
+
 	responses.JSON(w, http.StatusInternalServerError, apps)
 
 }

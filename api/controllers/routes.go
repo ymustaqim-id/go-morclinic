@@ -26,4 +26,7 @@ func (s *Server) initializeRoutes() {
 
 	//AppVersion routes
 	s.Router.HandleFunc("/api/mobile/app/version", middlewares.SetMiddlewareJSON(s.GetAppversion)).Methods("GET")
+	//Fasilitas routes
+	s.Router.HandleFunc("/api/mobile/fasilitas", middlewares.SetMiddlewareJSON(s.GetFasilitas)).Methods("GET")
+	s.Router.HandleFunc("/api/mobile/fasilitas/{id}", middlewares.SetMiddlewareJSON(s.GetFasilitasById)).Methods("GET")
 }
