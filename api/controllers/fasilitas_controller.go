@@ -35,13 +35,13 @@ func (server *Server) GetFasilitasById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
 	if err != nil {
-		responses.ERROR(w, http.StatusBadRequest, err)
+		responses.ERROR(w, http.StatusNotFound, err)
 		return
 	}
 	news := models.Informasi{}
 	newsData, err := news.FindFasilitasByID(server.DB, uint32(uid))
 	if err != nil {
-		responses.ERROR(w, http.StatusBadRequest, err)
+		responses.ERROR(w, http.StatusNotFound, err)
 		return
 	}
 	responses.JSON(w, http.StatusOK, newsData)
