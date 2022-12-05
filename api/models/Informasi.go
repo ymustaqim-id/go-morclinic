@@ -60,3 +60,13 @@ func (p *Informasi) FindNewsByIdKlinik(db *gorm.DB, id int32) (*[]Informasi, err
 	}
 	return &news, err
 }
+
+func (p *Informasi) FindListThreeByIdKlinik(db *gorm.DB, id int32) (*[]Informasi, error) {
+	var err error
+	news := []Informasi{}
+	err = db.Debug().Model(&Informasi{}).Where(&Informasi{Tipe: "news"}).Where(&Informasi{Id_klinik: id}).Limit(3).Order("id desc").Find(&news).Error
+	if err != nil {
+		return &[]Informasi{}, err
+	}
+	return &news, err
+}

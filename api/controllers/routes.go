@@ -34,4 +34,5 @@ func (s *Server) initializeRoutes() {
 	//News routes
 	s.Router.HandleFunc("/api/mobile/news/all", middlewares.SetMiddlewareJSON(s.GetNews)).Methods("GET")
 	s.Router.HandleFunc("/api/mobile/news", middlewares.SetMiddlewareJSON(s.GetNewsByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
+	s.Router.HandleFunc("/api/mobile/news/list_three", middlewares.SetMiddlewareJSON(s.GetListThreeByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
 }
