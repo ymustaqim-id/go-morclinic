@@ -26,7 +26,12 @@ func (s *Server) initializeRoutes() {
 
 	//AppVersion routes
 	s.Router.HandleFunc("/api/mobile/app/version", middlewares.SetMiddlewareJSON(s.GetAppversion)).Methods("GET")
+
 	//Fasilitas routes
-	s.Router.HandleFunc("/api/mobile/fasilitas", middlewares.SetMiddlewareJSON(s.GetFasilitas)).Methods("GET")
-	s.Router.HandleFunc("/api/mobile/fasilitas/{id}", middlewares.SetMiddlewareJSON(s.GetFasilitasById)).Methods("GET")
+	s.Router.HandleFunc("/api/mobile/fasilitas/all", middlewares.SetMiddlewareJSON(s.GetFasilitas)).Methods("GET")
+	s.Router.HandleFunc("/api/mobile/fasilitas", middlewares.SetMiddlewareJSON(s.GetFasilitasByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
+
+	//News routes
+	s.Router.HandleFunc("/api/mobile/news/all", middlewares.SetMiddlewareJSON(s.GetNews)).Methods("GET")
+	s.Router.HandleFunc("/api/mobile/news", middlewares.SetMiddlewareJSON(s.GetNewsByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
 }

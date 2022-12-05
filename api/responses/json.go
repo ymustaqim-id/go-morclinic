@@ -9,29 +9,34 @@ package responses
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/gommon/log"
 )
 
 type Response struct {
-	Status  int         `json:"status"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Status     bool        `json:"status"`
+	StatusCode int         `json:"statusCode"`
+	Message    string      `json:"message"`
+	Data       interface{} `json:"data"`
 }
 
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	var respData Response
 	var message string
-
 	w.WriteHeader(statusCode)
 	respData.Data = data
-	respData.Status = statusCode
+	respData.Status = true
+	respData.StatusCode = statusCode
 	message = "Data di temukan"
 
-	if respData.Status == 404 {
+	if respData.StatusCode == 404 {
+		respData.Status = false
 		message = "Data tidak di temukan"
+		respData.Data = nil
+	} else if respData.StatusCode == 401 {
+		respData.Status = false
+		message = "Autentifikasi gagal di lakukan."
 		respData.Data = nil
 	}
 
@@ -45,12 +50,9 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 }
 
 func ERROR(w http.ResponseWriter, statusCode int, err error) {
-	fmt.Println("Testtt 1 error")
 	if err != nil {
-		fmt.Println("Testtt if error")
 		JSON(w, statusCode, err)
 		return
 	}
-	fmt.Println("Testtt 2 error")
 	JSON(w, http.StatusBadRequest, err)
 }

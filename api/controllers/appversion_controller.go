@@ -23,7 +23,7 @@ func (server *Server) GetAppversion(w http.ResponseWriter, r *http.Request) {
 		if len(*apps) == 0 {
 			err = errors.New("Empty Data")
 		}
-		responses.ERROR(w, http.StatusInternalServerError, err)
+		responses.ERROR(w, http.StatusNotFound, err)
 		return
 	}
 	responses.JSON(w, http.StatusOK, apps)

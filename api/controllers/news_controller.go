@@ -19,7 +19,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (server *Server) GetFasilitas(w http.ResponseWriter, r *http.Request) {
+func (server *Server) GetNews(w http.ResponseWriter, r *http.Request) {
 
 	//CHeck if the auth token is valid and  get the user id from it
 	errs := auth.ExtractToken(r)
@@ -28,8 +28,8 @@ func (server *Server) GetFasilitas(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fasilitas := models.Informasi{}
-	apps, err := fasilitas.FindAllFasilitas(server.DB)
+	news := models.Informasi{}
+	apps, err := news.FindAllNews(server.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusNotFound, err)
 		return
@@ -39,7 +39,7 @@ func (server *Server) GetFasilitas(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (server *Server) GetFasilitasByIdKlinik(w http.ResponseWriter, r *http.Request) {
+func (server *Server) GetNewsByIdKlinik(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id_klinik"], 10, 32)
@@ -56,7 +56,7 @@ func (server *Server) GetFasilitasByIdKlinik(w http.ResponseWriter, r *http.Requ
 	}
 
 	news := models.Informasi{}
-	newsData, err := news.FindFasilitasByIdKlinik(server.DB, int32(uid))
+	newsData, err := news.FindNewsByIdKlinik(server.DB, int32(uid))
 	if err != nil || len(*newsData) == 0 {
 		if len(*newsData) == 0 {
 			err = errors.New("Empty Data")
