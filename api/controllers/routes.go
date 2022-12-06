@@ -35,4 +35,11 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/api/mobile/news/all", middlewares.SetMiddlewareJSON(s.GetNews)).Methods("GET")
 	s.Router.HandleFunc("/api/mobile/news", middlewares.SetMiddlewareJSON(s.GetNewsByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
 	s.Router.HandleFunc("/api/mobile/news/list_three", middlewares.SetMiddlewareJSON(s.GetListThreeByIdKlinik)).Methods("GET").Queries("id_klinik", "{id_klinik}")
+
+	//Jadwal dokter routes
+	s.Router.HandleFunc("/api/mobile/jadwaldokter", middlewares.SetMiddlewareJSON(s.JadwalDokter)).Methods("GET").Queries("id_klinik", "{id_klinik}").Queries("nama_hari", "{nama_hari}")
+
+	//Klinik routes
+	s.Router.HandleFunc("/api/mobile/klinik", middlewares.SetMiddlewareJSON(s.GetKlinik)).Methods("GET")
+	s.Router.HandleFunc("/api/mobile/klinik/detail", middlewares.SetMiddlewareJSON(s.GetKlinikDetail)).Methods("GET").Queries("id_klinik", "{id_klinik}")
 }
