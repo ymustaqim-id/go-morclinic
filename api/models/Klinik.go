@@ -45,7 +45,7 @@ func (u *Klinik) FindKlinik(db *gorm.DB) (*[]Klinik, error) {
 func (u *Klinik) DetailKlinik(db *gorm.DB, id int32) (*[]Klinik, error) {
 	var err error
 	klinik := []Klinik{}
-	err = db.Debug().Select("*").
+	err = db.Debug().Select("klinik.id, klinik.nama, klinik.alamat, klinik.status,min(jadwal_klinik.hari) as hari_mulai, max(jadwal_klinik.hari) as hari_selesai, min(jadwal_klinik.jam_praktek) as jam_mulai, max(jadwal_klinik.jam_selesai) as jam_selesai").
 		Model(&Klinik{}).
 		Model(&jadwalKlinik{}).
 		Joins("JOIN jadwal_klinik on jadwal_klinik.id_klinik=klinik.id").
