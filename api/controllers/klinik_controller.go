@@ -39,7 +39,6 @@ func (server *Server) GetKlinikDetail(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id_klinik"], 10, 32)
-	fmt.Println("r", uid)
 	if err != nil {
 		responses.ERROR(w, http.StatusNotFound, err)
 		return
@@ -54,6 +53,7 @@ func (server *Server) GetKlinikDetail(w http.ResponseWriter, r *http.Request) {
 
 	klinik := models.Klinik{}
 	klinikData, err := klinik.DetailKlinik(server.DB, int32(uid))
+	fmt.Println("klinikData", klinikData)
 	if err != nil || len(*klinikData) == 0 {
 		if len(*klinikData) == 0 {
 			err = errors.New("Empty Data")

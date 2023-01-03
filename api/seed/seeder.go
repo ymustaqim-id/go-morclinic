@@ -17,25 +17,14 @@ import (
 
 var users = []models.User{
 	models.User{
-		Nickname: "Steven victor",
-		Email:    "steven@gmail.com",
+		Username: "082117118674",
+		No_telp:  "082117118674",
 		Password: "password",
 	},
 	models.User{
-		Nickname: "Martin Luther",
-		Email:    "luther@gmail.com",
+		Username: "085640963089",
+		No_telp:  "085640963089",
 		Password: "password",
-	},
-}
-
-var posts = []models.Post{
-	models.Post{
-		Title:   "Title 1",
-		Content: "Hello world 1",
-	},
-	models.Post{
-		Title:   "Title 2",
-		Content: "Hello world 2",
 	},
 }
 
@@ -53,18 +42,5 @@ func Load(db *gorm.DB) {
 	err = db.Debug().Model(&models.Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error
 	if err != nil {
 		log.Fatalf("attaching foreign key error: %v", err)
-	}
-
-	for i, _ := range users {
-		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
-		if err != nil {
-			log.Fatalf("cannot seed users table: %v", err)
-		}
-		posts[i].AuthorID = users[i].ID
-
-		err = db.Debug().Model(&models.Post{}).Create(&posts[i]).Error
-		if err != nil {
-			log.Fatalf("cannot seed posts table: %v", err)
-		}
 	}
 }
