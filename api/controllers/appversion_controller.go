@@ -21,11 +21,11 @@ func (server *Server) GetAppversion(w http.ResponseWriter, r *http.Request) {
 	apps, err := appversion.FindAllVersion(server.DB)
 	if err != nil || len(*apps) == 0 {
 		if len(*apps) == 0 {
-			err = errors.New("Empty Data")
+			err = errors.New("Data tidak di temukan.")
 		}
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data tidak di temukan.")
 		return
 	}
-	responses.JSON(w, http.StatusOK, apps)
+	responses.JSON(w, http.StatusOK, apps, "Data app version di temukan.")
 
 }

@@ -10,7 +10,6 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -24,60 +23,54 @@ import (
 func (server *Server) LoginWithUsername(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, err, "Read parameter tidak sesuai")
 		return
 	}
 	pengguna := models.Pengguna_aplikasi{}
 	err = json.Unmarshal(body, &pengguna)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, err, "Read parameter tidak sesuai")
 		return
 	}
 
 	dataPengguna, err := pengguna.GetByDataUname(server.DB, pengguna.Username)
 	if len(*dataPengguna) == 0 {
-		formattedError := errors.New("Data pengguna tidak di temukan.")
-		responses.ERROR(w, http.StatusNotFound, formattedError)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data pengguna tidak di temukan.")
 		return
 	}
 
 	token, err := server.SignInUname(pengguna.Username, pengguna.Password)
 	if len(token) == 0 {
-		formattedError := errors.New("Token tidak berhasil di generate.")
-		responses.ERROR(w, http.StatusNotFound, formattedError)
+		responses.ERROR(w, http.StatusNotFound, nil, "Token tidak berhasil di generate.")
 		return
 	}
-	responses.JSON(w, http.StatusOK, token)
+	responses.JSON(w, http.StatusOK, token, "Token berhasil di generate.")
 }
 
 func (server *Server) LoginWithNorm(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, err, "Read parameter tidak sesuai")
 		return
 	}
 	pengguna := models.Pengguna_aplikasi{}
 	err = json.Unmarshal(body, &pengguna)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, err, "Read parameter tidak sesuai")
 		return
 	}
-	fmt.Println("pengguna norm", pengguna)
-	fmt.Println("err", err)
 
 	dataPengguna, err := pengguna.GetByDataNorm(server.DB, pengguna.No_rm)
 	if len(*dataPengguna) == 0 {
-		formattedError := errors.New("Data pengguna tidak di temukan.")
-		responses.ERROR(w, http.StatusNotFound, formattedError)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data pengguna tidak di temukan.")
 		return
 	}
 	token, err := server.SignInNorm(pengguna.No_rm, pengguna.Password)
 	if len(token) == 0 {
-		formattedError := errors.New("Token tidak berhasil di generate.")
-		responses.ERROR(w, http.StatusNotFound, formattedError)
+		responses.ERROR(w, http.StatusNotFound, nil, "Token tidak berhasil di generate.")
 		return
 	}
-	responses.JSON(w, http.StatusOK, token)
+	responses.JSON(w, http.StatusOK, token, "Token berhasil di generate.")
 }
 
 func (server *Server) SignInUname(username, password string) (string, error) {

@@ -9,6 +9,7 @@ package responses
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/gommon/log"
@@ -21,26 +22,22 @@ type Response struct {
 	Data       interface{} `json:"data"`
 }
 
-func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
+func JSON(w http.ResponseWriter, statusCode int, data interface{}, pesan string) {
+	fmt.Println("mesage data", data)
 	var respData Response
-	var message string
 	w.WriteHeader(statusCode)
 	respData.Data = data
 	respData.Status = true
 	respData.StatusCode = statusCode
-	message = "Data di temukan"
+	respData.Message = pesan
 
 	if respData.StatusCode == 404 {
 		respData.Status = false
-		message = "Data tidak di temukan"
 		respData.Data = nil
 	} else if respData.StatusCode == 401 {
 		respData.Status = false
-		message = "Autentifikasi gagal di lakukan."
 		respData.Data = nil
 	}
-
-	respData.Message = message
 
 	err := json.NewEncoder(w).Encode(respData)
 	if err != nil {
@@ -49,10 +46,10 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	}
 }
 
-func ERROR(w http.ResponseWriter, statusCode int, err error) {
+func ERROR(w http.ResponseWriter, statusCode int, err error, pesan string) {
 	if err != nil {
-		JSON(w, statusCode, err)
+		JSON(w, statusCode, err, pesan)
 		return
 	}
-	JSON(w, http.StatusBadRequest, err)
+	JSON(w, http.StatusBadRequest, err, pesan)
 }

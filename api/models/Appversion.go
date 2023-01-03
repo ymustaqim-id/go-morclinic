@@ -20,7 +20,7 @@ type App_version struct {
 func (u *App_version) FindAllVersion(db *gorm.DB) (*[]App_version, error) {
 	var err error
 	appversion := []App_version{}
-	err = db.Debug().Model(&App_version{}).Limit(100).Find(&appversion).Error
+	err = db.Debug().Model(&App_version{}).Limit(100).First(&appversion).Error
 	if err != nil {
 		return &[]App_version{}, err
 	}

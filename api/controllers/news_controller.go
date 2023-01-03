@@ -24,18 +24,18 @@ func (server *Server) GetNews(w http.ResponseWriter, r *http.Request) {
 	//CHeck if the auth token is valid and  get the user id from it
 	errs := auth.ExtractToken(r)
 	if errs == "" {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusUnauthorized, nil, "Authentifikasi gagal di lakukan.")
 		return
 	}
 
 	news := models.Informasi{}
 	apps, err := news.FindAllNews(server.DB)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data tidak di temukan.")
 		return
 	}
 
-	responses.JSON(w, http.StatusOK, apps)
+	responses.JSON(w, http.StatusOK, apps, "Data news di temukan.")
 
 }
 
@@ -44,14 +44,14 @@ func (server *Server) GetNewsByIdKlinik(w http.ResponseWriter, r *http.Request) 
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id_klinik"], 10, 32)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Parameter tidak sesuai.")
 		return
 	}
 
 	//CHeck if the auth token is valid and  get the user id from it
 	errs := auth.ExtractToken(r)
 	if errs == "" {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusUnauthorized, nil, "Authentifikasi gagal di lakukan.")
 		return
 	}
 
@@ -61,10 +61,10 @@ func (server *Server) GetNewsByIdKlinik(w http.ResponseWriter, r *http.Request) 
 		if len(*newsData) == 0 {
 			err = errors.New("Empty Data")
 		}
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data news tidak di temukan.")
 		return
 	}
-	responses.JSON(w, http.StatusOK, newsData)
+	responses.JSON(w, http.StatusOK, newsData, "Data news di temukan.")
 }
 
 func (server *Server) GetListThreeByIdKlinik(w http.ResponseWriter, r *http.Request) {
@@ -72,14 +72,14 @@ func (server *Server) GetListThreeByIdKlinik(w http.ResponseWriter, r *http.Requ
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id_klinik"], 10, 32)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, err.Error())
 		return
 	}
 
 	//CHeck if the auth token is valid and  get the user id from it
 	errs := auth.ExtractToken(r)
 	if errs == "" {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusUnauthorized, nil, err.Error())
 		return
 	}
 
@@ -89,8 +89,8 @@ func (server *Server) GetListThreeByIdKlinik(w http.ResponseWriter, r *http.Requ
 		if len(*newsData) == 0 {
 			err = errors.New("Empty Data")
 		}
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, err.Error())
 		return
 	}
-	responses.JSON(w, http.StatusOK, newsData)
+	responses.JSON(w, http.StatusOK, newsData, "Data list three di temukan.")
 }

@@ -16,7 +16,6 @@ import (
 	"go-morclinic/api/auth"
 	"go-morclinic/api/models"
 	"go-morclinic/api/responses"
-	"go-morclinic/api/utils/formaterror"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -24,31 +23,30 @@ import (
 func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "")
 		return
 	}
 	user := models.User{}
 	err = json.Unmarshal(body, &user)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "")
 		return
 	}
 
 	user.Prepare()
 	err = user.Validate("login")
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "")
 		return
 	}
 	token, err := server.SignIn(user.Username, user.Password)
 	fmt.Println("user", token)
 
 	if err != nil {
-		formattedError := formaterror.FormatError(err.Error())
-		responses.ERROR(w, http.StatusNotFound, formattedError)
+		responses.ERROR(w, http.StatusNotFound, nil, "")
 		return
 	}
-	responses.JSON(w, http.StatusOK, token)
+	responses.JSON(w, http.StatusOK, token, "Data di temukan.")
 }
 
 func (server *Server) SignIn(email, password string) (string, error) {

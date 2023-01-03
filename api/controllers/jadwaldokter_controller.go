@@ -24,14 +24,14 @@ func (server *Server) JadwalDokter(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id_klinik"], 10, 32)
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Parameter tidak boleh kosong.")
 		return
 	}
 
 	//CHeck if the auth token is valid and  get the user id from it
 	errs := auth.ExtractToken(r)
 	if errs == "" {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusUnauthorized, nil, "Authentifikasi gagal di lakukan.")
 		return
 	}
 
@@ -41,8 +41,8 @@ func (server *Server) JadwalDokter(w http.ResponseWriter, r *http.Request) {
 		if len(*jadwalDokter) == 0 {
 			err = errors.New("Empty Data")
 		}
-		responses.ERROR(w, http.StatusNotFound, err)
+		responses.ERROR(w, http.StatusNotFound, nil, "Data jadwal tidak di temukan.")
 		return
 	}
-	responses.JSON(w, http.StatusOK, jadwalDokter)
+	responses.JSON(w, http.StatusOK, jadwalDokter, "Data jadwal di temukan.")
 }
